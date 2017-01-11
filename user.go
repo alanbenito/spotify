@@ -374,3 +374,36 @@ func (c *Client) CurrentUsersPlaylistsOpt(opt *Options) (*SimplePlaylistPage, er
 	}
 	return &result, nil
 }
+
+// CurrentUsersPlaylistsOpt is like CurrentUsersPlaylists, but it accepts
+// additional options for sorting and filtering the results.
+func (c *Client) GetUserTopTracks(opt *Options) (*UserTopTracks, error) {
+	spotifyURL := baseAddress + "me/top/tracks"
+	if opt != nil {
+		v := url.Values{}
+		if opt.Limit != nil {
+			v.Set("limit", strconv.Itoa(*opt.Limit))
+		}
+		if opt.Offset != nil {
+			v.Set("offset", strconv.Itoa(*opt.Offset))
+		}
+		if params := v.Encode(); params != "" {
+			spotifyURL += "?" + params
+		}
+	}
+	resp, err := c.http.Get(spotifyURL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, decodeError(resp.Body)
+	}
+	var result UserTopTracks
+	err = json.NewDecoder(resp.Body).Decode(&result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
