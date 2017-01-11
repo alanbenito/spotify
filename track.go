@@ -80,7 +80,7 @@ type UserTopTracks struct {
 			AlbumType    string `json:"album_type"`
 			ExternalUrls map[string]string `json:"external_urls"`
 			Href   string `json:"href"`
-			ID     string `json:"id"`
+			ID     ID `json:"id"`
 			Images []Image `json:"images"`
 			Name string `json:"name"`
 			Type string `json:"type"`
@@ -89,7 +89,7 @@ type UserTopTracks struct {
 		Artists []struct {
 			ExternalUrls map[string]string `json:"external_urls"`
 			Href string `json:"href"`
-			ID   string `json:"id"`
+			ID   ID `json:"id"`
 			Name string `json:"name"`
 			Type string `json:"type"`
 			URI  string `json:"uri"`
@@ -100,7 +100,7 @@ type UserTopTracks struct {
 	    ExternalIDs          map[string]string `json:"external_ids"`
 		ExternalUrls map[string]string `json:"external_urls"`
 		Href        string `json:"href"`
-		ID          string `json:"id"`
+		ID          ID `json:"id"`
 		IsPlayable  bool   `json:"is_playable"`
 		Name        string `json:"name"`
 		Popularity  int    `json:"popularity"`
