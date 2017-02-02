@@ -3,6 +3,7 @@
 package spotify
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"io"
@@ -10,6 +11,9 @@ import (
 	"net/url"
 	"strconv"
 )
+
+// Version is the version of this library.
+const Version = "1.0.0"
 
 const (
 	// DateLayout can be used with time.Parse to create time.Time values
@@ -41,6 +45,14 @@ type URI string
 // ID is a base-62 identifier for an artist, track, album, etc.
 // It can be found at the end of a spotify.URI.
 type ID string
+
+func init() {
+	// disable HTTP/2 for DefaultClient, see: https://github.com/zmb3/spotify/issues/20
+	tr := &http.Transport{
+		TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
+	}
+	DefaultClient.http.Transport = tr
+}
 
 func (id *ID) String() string {
 	return string(*id)
